@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,6 +13,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [likes, setLikes] = useState('')
+  const [messageState, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,6 +32,8 @@ const App = () => {
 
   const handleLogin = async event => {
     event.preventDefault()
+
+    try {
       const userToLogIn = {
         username,
         password
@@ -40,6 +44,10 @@ const App = () => {
       setUser(userLoggedIn)
       setUsername('')
       setPassword('')
+    } catch (exception) {
+      setMessage('Wrong username or password')
+      setTimeout(() => setMessage(null), 5000)
+    }
   }
 
   const handleLogOut = () => {
@@ -60,6 +68,8 @@ const App = () => {
     .create(blogObject)
     .then(returnedBlog => {
       setBlogs(blogs.concat(returnedBlog))
+      setMessage(`a new blog ${title} by ${author}`)
+      setTimeout(() => setMessage(null), 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
@@ -73,6 +83,7 @@ const App = () => {
         user === null ?
           <div>   
             <h2>log in to application</h2>
+            <Notification message={messageState} colorearEn={'red'}/>
             <form onSubmit={handleLogin}>
               <div>
                 username
@@ -97,6 +108,7 @@ const App = () => {
           </div> :
             <div>
               <h2>blogs</h2>
+            <Notification message={messageState} colorearEn={'green'}/>
               {user.username} logged in <button onClick={handleLogOut}>logout</button>
               <h2>create new</h2>
               <form onSubmit={addBlog}>
