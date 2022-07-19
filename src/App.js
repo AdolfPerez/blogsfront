@@ -3,17 +3,15 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [likes, setLikes] = useState('')
   const [messageState, setMessage] = useState(null)
+  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -55,28 +53,6 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = event => {
-    event.preventDefault()
-    const blogObject = {
-      title,
-      author,
-      url,
-      likes
-    }
-
-    blogService
-    .create(blogObject)
-    .then(returnedBlog => {
-      setBlogs(blogs.concat(returnedBlog))
-      setMessage(`a new blog ${title} by ${author}`)
-      setTimeout(() => setMessage(null), 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-      setLikes('')
-    })
-  }
-
   return (
     <div>
       {
@@ -111,45 +87,13 @@ const App = () => {
             <Notification message={messageState} colorearEn={'green'}/>
               {user.username} logged in <button onClick={handleLogOut}>logout</button>
               <h2>create new</h2>
-              <form onSubmit={addBlog}>
-                <div>
-                  title:
-                  <input
-                  type='text'
-                  value={title}
-                  name='title'
-                  onChange={({ target }) => setTitle(target.value)}
-                  />
-                </div>
-                <div>
-                  author:
-                  <input
-                  type='text'
-                  value={author}
-                  name='author'
-                  onChange={({ target }) => setAuthor(target.value)}
-                  />
-                </div>
-                <div>
-                  url:
-                  <input
-                  type='text'
-                  value={url}
-                  name='url'
-                  onChange={({ target }) => setUrl(target.value)}
-                  />
-                </div>
-                <div>
-                  likes:
-                  <input
-                  type='number'
-                  value={likes}
-                  name='likes'
-                  onChange={({ target }) => setLikes(target.value)}
-                  />
-                </div>
-                <button type='submit'>create</button>
-              </form>
+              <div style={{display: blogFormVisible ? '' : 'none' }}>
+                <NewBlogForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage}/>
+                <button onClick={() => setBlogFormVisible(false)}>cancel</button>
+              </div>
+              <div style={{display: blogFormVisible ? 'none' : '' }}>
+                <button onClick={() => setBlogFormVisible(true)}>new note</button>
+              </div>
               {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
           </div>
       }
