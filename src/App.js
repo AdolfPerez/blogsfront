@@ -94,7 +94,7 @@ const App = () => {
               <div style={{display: blogFormVisible ? 'none' : '' }}>
                 <button onClick={() => setBlogFormVisible(true)}> create new note</button>
               </div>
-              {blogs.map(blog => <Blog user={user.username} key={blog.id} blog={blog} />)}
+              {blogs.map(blog => <Blog user={user} key={blog.id} blog={blog} />)}
           </div>
       }
     </div>

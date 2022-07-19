@@ -21,7 +21,7 @@ const Blog = ({blog, user}) => {
         {blog.title} {blog.author} <button onClick={() => setBlogCompleto(false)}>hide</button>
         <div>{blog.url}</div>
         <div>Likes: {blog.likes}<button>like</button></div>
-        <div>{user}</div>
+        <div>{user.username}</div>
       </div>
     </div>  
   )
