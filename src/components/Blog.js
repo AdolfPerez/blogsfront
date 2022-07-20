@@ -15,7 +15,7 @@ const Blog = ({blog, user}) => {
     }
 
   return (
-    <div style={blogStyle}>
+    <div style={thisBlog ? blogStyle : {display: 'none'}}>
       <div style={{display: blogCompleto ? 'none' : ''}}>
         {thisBlog.title} {thisBlog.author} <button onClick={() => setBlogCompleto(true)}>view</button>
       </div>
@@ -30,7 +30,13 @@ const Blog = ({blog, user}) => {
           }
         }>like</button></div>
         <div>{user.username}</div>
-        <button>remove</button>
+        <button onClick={
+          () => {
+           if (window.confirm(`Remove blog ${thisBlog.title} ${thisBlog.author}`)) {
+            blogService.deleteOne(thisBlog.id).then(eliminado => setBlog(false))
+           }
+          }
+        }>remove</button>
       </div>
     </div>  
   )
