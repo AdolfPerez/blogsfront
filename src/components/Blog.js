@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({blog, user}) => {
 
   const [blogCompleto, setBlogCompleto] = useState(false)
+  const [thisBlog, setBlog] = useState(blog)
   
     const blogStyle = {
       paddingTop: 10,
@@ -15,12 +17,18 @@ const Blog = ({blog, user}) => {
   return (
     <div style={blogStyle}>
       <div style={{display: blogCompleto ? 'none' : ''}}>
-        {blog.title} {blog.author} <button onClick={() => setBlogCompleto(true)}>view</button>
+        {thisBlog.title} {thisBlog.author} <button onClick={() => setBlogCompleto(true)}>view</button>
       </div>
       <div style={{display: blogCompleto ? '' : 'none' }}>
-        {blog.title} {blog.author} <button onClick={() => setBlogCompleto(false)}>hide</button>
-        <div>{blog.url}</div>
-        <div>Likes: {blog.likes}<button>like</button></div>
+        {thisBlog.title} {thisBlog.author} <button onClick={() => setBlogCompleto(false)}>hide</button>
+        <div>{thisBlog.url}</div>
+        <div>Likes: {thisBlog.likes}<button onClick={
+          () => {
+            const blogActualizado = { ...thisBlog, likes: thisBlog.likes + 1 }
+            blogService.update(thisBlog.id, blogActualizado)
+            setBlog(blogActualizado)
+          }
+        }>like</button></div>
         <div>{user.username}</div>
       </div>
     </div>  
