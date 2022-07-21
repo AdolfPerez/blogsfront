@@ -2,6 +2,7 @@ import { useState } from 'react'
 import blogService from '../services/blogs'
 
 const Blog = ({blog, user}) => {
+
   const [blogCompleto, setBlogCompleto] = useState(false)
   const [thisBlog, setBlog] = useState(blog)
   
@@ -28,14 +29,14 @@ const Blog = ({blog, user}) => {
             setBlog(blogActualizado)
           }
         }>like</button></div>
-        <div>{ thisBlog.user.username }</div>
-          <button onClick={
-            () => {
-             if (window.confirm(`Remove blog ${thisBlog.title} ${thisBlog.author}`)) {
-              blogService.deleteOne(thisBlog.id).then(eliminado => setBlog(false))
-             }
-            }
-          }>remove</button>
+        <div>{blog.user.username}</div>
+        <button onClick={
+          () => {
+           if (window.confirm(`Remove blog ${thisBlog.title} ${thisBlog.author}`)) {
+            blogService.deleteOne(thisBlog.id).then(eliminado => setBlog(false))
+           }
+          }
+        }>remove</button>
       </div>
     </div>  
   )

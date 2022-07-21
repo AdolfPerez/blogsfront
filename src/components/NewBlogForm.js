@@ -1,6 +1,6 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
-const NewBlogForm = ({ blogs, setBlogs, setMessage }) => {
+const NewBlogForm = ({ setBlogFormVisible, blogs, setBlogs, setMessage }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -18,6 +18,7 @@ const NewBlogForm = ({ blogs, setBlogs, setMessage }) => {
     blogService
     .create(blogObject)
     .then(returnedBlog => {
+      setBlogFormVisible(false)
       setBlogs(blogs.concat(returnedBlog).sort((a, b) => a.likes - b.likes))
       setMessage(`a new blog ${title} by ${author}`)
       setTimeout(() => setMessage(null), 5000)

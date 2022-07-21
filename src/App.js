@@ -88,7 +88,7 @@ const App = () => {
               {user.username} logged in <button onClick={handleLogOut}>logout</button>
               <h2>create new</h2>
               <div style={{display: blogFormVisible ? '' : 'none' }}>
-                <NewBlogForm blogs={blogs} setBlogs={setBlogs} setMessage={setMessage}/>
+                <NewBlogForm setBlogFormVisible={setBlogFormVisible} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage}/>
                 <button onClick={() => setBlogFormVisible(false)}>cancel</button>
               </div>
               <div style={{display: blogFormVisible ? 'none' : '' }}>
