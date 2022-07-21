@@ -18,7 +18,7 @@ const NewBlogForm = ({ blogs, setBlogs, setMessage }) => {
     blogService
     .create(blogObject)
     .then(returnedBlog => {
-      setBlogs(blogs.concat(returnedBlog))
+      setBlogs(blogs.concat(returnedBlog).sort((a, b) => a.likes - b.likes))
       setMessage(`a new blog ${title} by ${author}`)
       setTimeout(() => setMessage(null), 5000)
       setTitle('')
