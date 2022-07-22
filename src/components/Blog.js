@@ -5,7 +5,7 @@ const Blog = ({setBlogs, blog, user}) => {
 
   const [blogCompleto, setBlogCompleto] = useState(false)
   const [thisBlog, setBlog] = useState(blog)
-  const thisUser = blog.user.username || user.username //cuando se agrega una nuevo blog en la propiedad user del mismo solo se almacena el id, es decir carece de la propiedad username lo que da como resultado undefined, recien cuando se realiza una peticion get del mismo reemplaza la propiedad user anterior por un objeto que ya contiene el username, por lo que es necesario de momento utilizar una variable auxiliar 
+  const thisUser = blog.user.username
   
     const blogStyle = {
       paddingTop: 10,
