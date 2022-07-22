@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({blog, user}) => {
+const Blog = ({setBlogs, blog, user}) => {
 
   const [blogCompleto, setBlogCompleto] = useState(false)
   const [thisBlog, setBlog] = useState(blog)
+  const thisUser = blog.user.username || user.username //cuando se agrega una nuevo blog en la propiedad user del mismo solo se almacena el id, es decir carece de la propiedad username lo que da como resultado undefined, recien cuando se realiza una peticion get del mismo reemplaza la propiedad user anterior por un objeto que ya contiene el username, por lo que es necesario de momento utilizar una variable auxiliar 
   
     const blogStyle = {
       paddingTop: 10,
@@ -27,10 +28,13 @@ const Blog = ({blog, user}) => {
             const blogActualizado = { ...thisBlog, likes: thisBlog.likes + 1 }
             blogService.update(thisBlog.id, blogActualizado)
             setBlog(blogActualizado)
+            blogService.getAll().then(blogs => {
+              setBlogs(blogs.sort((a, b) => a.likes - b.likes))
+            })  
           }
         }>like</button></div>
-        <div>{blog.user.username}</div>
-        <button onClick={
+        <div>{thisUser}</div>
+        <button style={{display: user.username === thisUser ? '' : 'none' }} onClick={
           () => {
            if (window.confirm(`Remove blog ${thisBlog.title} ${thisBlog.author}`)) {
             blogService.deleteOne(thisBlog.id).then(eliminado => setBlog(false))

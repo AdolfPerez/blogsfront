@@ -40,6 +40,9 @@ const App = () => {
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(userLoggedIn))
       blogService.setToken(userLoggedIn.token)
       setUser(userLoggedIn)
+      blogService.getAll().then(blogs => {
+        setBlogs(blogs.sort((a, b) => a.likes - b.likes))
+      })  
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -50,6 +53,7 @@ const App = () => {
 
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
+    setBlogs([])
     setUser(null)
   }
 
@@ -94,7 +98,7 @@ const App = () => {
               <div style={{display: blogFormVisible ? 'none' : '' }}>
                 <button onClick={() => setBlogFormVisible(true)}> create new note</button>
               </div>
-              {blogs.map(blog => <Blog user={user} key={blog.id} blog={blog} />)}
+              {blogs.map(blog => <Blog setBlogs={setBlogs} user={user} key={blog.id} blog={blog} />)}
           </div>
       }
     </div>
